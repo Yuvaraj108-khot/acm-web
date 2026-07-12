@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { useState } from "react";
 
 const links = [
   { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
   { name: "Events", path: "/events" },
   { name: "Projects", path: "/projects" },
   { name: "Team", path: "/team" },
@@ -13,10 +15,39 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    
+    // Add glass effect only after scrolling past hero slightly
+    if (latest > 50) {
+      setHasScrolled(true);
+    } else {
+      setHasScrolled(false);
+    }
+
+    // Hide on scroll down, show on scroll up
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-[1200px]">
-      <div className="glass-nav rounded-2xl px-6 h-16 flex items-center justify-between border border-white/10 shadow-2xl">
+    <motion.nav 
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-150%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-[1200px]"
+    >
+      <div className={`rounded-2xl px-6 h-16 flex items-center justify-between transition-all duration-300 ${hasScrolled ? 'glass-nav border border-white/10 shadow-2xl' : 'bg-transparent border border-transparent'}`}>
         
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
@@ -54,6 +85,6 @@ export default function Navbar() {
         </div>
 
       </div>
-    </nav>
+    </motion.nav>
   );
 }
