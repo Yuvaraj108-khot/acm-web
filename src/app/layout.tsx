@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Outfit, Poppins } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const poppins = Poppins({
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "ACM NMAMIT",
-  description: "Association for Computing Machinery NMAMIT Chapter",
+  title: "ACM NMAMIT | Premium Developer Platform",
+  description: "The definitive platform for the ACM NMAMIT student chapter.",
 };
 
 import Navbar from "@/components/layout/Navbar";
@@ -26,9 +25,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${outfit.variable} ${poppins.variable} bg-background text-text-dark selection:bg-primary selection:text-white font-body`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-bg-base text-text-body antialiased`}
       >
         <Navbar />
         {children}

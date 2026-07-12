@@ -1,118 +1,132 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export default function TeamPage() {
   const members = [
-    { name: "Rohit Varma", role: "SECRETARY", color: "from-primary to-primary/80" },
-    { name: "Ananya Hegde", role: "TREASURER", color: "from-secondary to-secondary/80" },
-    { name: "Karan Bhat", role: "MEMBERSHIP CHAIR", color: "from-accent to-accent/80" },
-    { name: "Isha Shetty", role: "WEBMASTER", color: "from-primary to-secondary" },
+    { 
+      name: "Aravind Sharma", 
+      role: "CHAIRPERSON", 
+      skills: ["System Design", "Rust", "Leadership"],
+      github: "aravind-s",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB5AVO8s2YkIPfX63m1Sd_GnQBSjvLiKu9uJjqK8ojyHnrU-iv_xab_rKkhn6E4N7TFeESYkRj1efBJ-aUys3NxiHpxxK0j_Ikv99dzUDnEZkAtocNyI3RBWicF_FhChaPlvhfSCzMNeyqqOKN5uWpbZBM5AEVBeRUqdYTgujC2a8uFpmfxr2gRuuSQ5_889s6uKst0wqWbK5bYVm_EDLQd7QHiEx6qPUTmYmGa41fg4j_YTGcdh9sg"
+    },
+    { 
+      name: "Mira Nair", 
+      role: "VICE CHAIR", 
+      skills: ["React", "UI/UX", "Product"],
+      github: "mira-n",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4HRd3NIl6w4_0P2HMpjOsPIuiUE58Fuow0HPtsJricxhQuJ1JPjUyqnL-VlmSTYCi1Wok4LfibgGdXJKJV0GqyLa6lOhBbUZQCyNR1bkNnfe_K39c-RF8KRfQO2GEFQXAwmikue6vgckX7MgB_R6OQrbjv-HLuqPf0uT-T7APdvL4FPXXRNVUmCGO1OMzEXgCpNF2CQhuYAWRKHYEP4Z_WuKLxRhil8l1V-0nXKWyxedb6ig5vGvs"
+    },
+    { 
+      name: "Rohit Varma", 
+      role: "SECRETARY", 
+      skills: ["Node.js", "Docker", "DevOps"],
+      github: "rohit-v",
+      image: ""
+    },
+    { 
+      name: "Isha Shetty", 
+      role: "WEBMASTER", 
+      skills: ["Next.js", "TypeScript", "Tailwind"],
+      github: "isha-s",
+      image: ""
+    },
   ];
 
   return (
-    <main className="min-h-screen pt-40 pb-24 px-6 max-w-7xl mx-auto overflow-hidden">
-      
-      {/* Hero Section */}
-      <section className="mb-24 text-center">
-        <motion.h1 
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: "spring", bounce: 0.5 }}
-          className="text-6xl md:text-8xl font-black mb-6 tracking-tight text-text-dark"
-        >
-          The <span className="gradient-text">Architects.</span>
-        </motion.h1>
-        <motion.p 
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-xl text-text-light max-w-2xl mx-auto font-medium"
-        >
-          A collective of engineers, researchers, and visionaries dedicated to pushing the boundaries of computing at NMAMIT.
-        </motion.p>
-      </section>
+    <main className="min-h-screen bg-bg-base pt-32 pb-24 px-6 relative overflow-hidden">
+      <div className="max-w-[1440px] mx-auto relative z-10">
+        
+        {/* Header Section */}
+        <section className="mb-24 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+              The <span className="text-text-muted">Architects.</span>
+            </h1>
+            <p className="text-lg text-text-muted max-w-2xl mx-auto font-medium">
+              A collective of engineers, researchers, and visionaries dedicated to pushing the boundaries of computing at NMAMIT.
+            </p>
+          </motion.div>
+        </section>
 
-      {/* The Chairs */}
-      <section className="mb-32">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {/* Team Grid */}
+        <section>
+          <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+            <h2 className="text-lg font-mono text-text-muted">EXECUTIVE COUNCIL '24</h2>
+            <div className="text-xs text-text-muted font-mono">{members.length} MEMBERS</div>
+          </div>
           
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {members.map((member, i) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
+                className="dev-card p-6 rounded-2xl group cursor-pointer"
+              >
+                <div className="aspect-square rounded-xl bg-bg-elevated mb-6 overflow-hidden border border-white/5 relative">
+                  {member.image ? (
+                    <img src={member.image} alt={member.name} className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-105" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-text-muted font-mono text-4xl opacity-20">
+                      {member.name.charAt(0)}
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-bg-base/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                
+                <p className="text-[10px] text-primary-base font-mono font-bold tracking-widest mb-2 uppercase">{member.role}</p>
+                <h3 className="text-xl font-bold mb-4">{member.name}</h3>
+                
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {member.skills.map(skill => (
+                    <span key={skill} className="bg-white/5 border border-white/10 text-text-muted text-[10px] px-2 py-1 rounded">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3 pt-4 border-t border-white/5">
+                  <a href={`https://github.com/${member.github}`} className="text-text-muted hover:text-white transition-colors" title="GitHub">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                  </a>
+                  <a href="#" className="text-text-muted hover:text-primary-base transition-colors" title="LinkedIn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Recruitment CTA */}
+        <section className="mt-32">
           <motion.div 
-            whileHover={{ y: -10, rotate: -2 }}
-            className="bg-white p-6 rounded-[2.5rem] shadow-card hover:shadow-card-hover transition-all relative group"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="dev-card p-12 md:p-24 rounded-3xl text-center relative overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-[2.5rem] pointer-events-none -z-10 group-hover:scale-105 transition-transform" />
-            <div className="aspect-[4/5] rounded-[2rem] bg-slate-200 mb-6 overflow-hidden relative">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5AVO8s2YkIPfX63m1Sd_GnQBSjvLiKu9uJjqK8ojyHnrU-iv_xab_rKkhn6E4N7TFeESYkRj1efBJ-aUys3NxiHpxxK0j_Ikv99dzUDnEZkAtocNyI3RBWicF_FhChaPlvhfSCzMNeyqqOKN5uWpbZBM5AEVBeRUqdYTgujC2a8uFpmfxr2gRuuSQ5_889s6uKst0wqWbK5bYVm_EDLQd7QHiEx6qPUTmYmGa41fg4j_YTGcdh9sg" alt="Chairperson" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700" />
-            </div>
-            <div className="px-4">
-              <span className="bg-primary/10 text-primary font-bold px-4 py-1 rounded-full text-sm mb-4 inline-block">CHAIRPERSON</span>
-              <h3 className="text-4xl font-black mb-2">Aravind Sharma</h3>
+            <div className="glow-orb-blue top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30" />
+            <div className="relative z-10">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Join the Revolution</h2>
+              <p className="text-lg text-text-muted font-medium mb-10 max-w-xl mx-auto">
+                We are always looking for students who prioritize craft and technical rigor. Recruitment cycles open every semester.
+              </p>
+              <button className="bg-white text-bg-base px-8 py-3 rounded-md font-medium hover:bg-white/90 transition-colors shadow-glow-primary">
+                Apply for Core '25
+              </button>
             </div>
           </motion.div>
+        </section>
 
-          <motion.div 
-            whileHover={{ y: -10, rotate: 2 }}
-            className="bg-white p-6 rounded-[2.5rem] shadow-card hover:shadow-card-hover transition-all relative group md:mt-24"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-secondary/20 to-transparent rounded-[2.5rem] pointer-events-none -z-10 group-hover:scale-105 transition-transform" />
-            <div className="aspect-[4/5] rounded-[2rem] bg-slate-200 mb-6 overflow-hidden relative">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4HRd3NIl6w4_0P2HMpjOsPIuiUE58Fuow0HPtsJricxhQuJ1JPjUyqnL-VlmSTYCi1Wok4LfibgGdXJKJV0GqyLa6lOhBbUZQCyNR1bkNnfe_K39c-RF8KRfQO2GEFQXAwmikue6vgckX7MgB_R6OQrbjv-HLuqPf0uT-T7APdvL4FPXXRNVUmCGO1OMzEXgCpNF2CQhuYAWRKHYEP4Z_WuKLxRhil8l1V-0nXKWyxedb6ig5vGvs" alt="Vice Chair" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700" />
-            </div>
-            <div className="px-4">
-              <span className="bg-secondary/10 text-secondary font-bold px-4 py-1 rounded-full text-sm mb-4 inline-block">VICE CHAIR</span>
-              <h3 className="text-4xl font-black mb-2">Mira Nair</h3>
-            </div>
-          </motion.div>
-
-        </div>
-      </section>
-
-      {/* Core Members */}
-      <section className="mb-32">
-        <h2 className="text-5xl font-black mb-12 text-center">EXECUTIVE COUNCIL</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {members.map((member, i) => (
-            <motion.div
-              key={member.name}
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              whileHover={{ y: -10, scale: 1.05 }}
-              transition={{ delay: i * 0.1, type: "spring" }}
-              viewport={{ once: true }}
-              className={`p-6 rounded-[2rem] text-white bg-gradient-to-br ${member.color} shadow-bouncy flex flex-col justify-end min-h-[300px] relative overflow-hidden group cursor-pointer`}
-            >
-              <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem]" />
-              <p className="font-bold text-sm mb-2 opacity-90">{member.role}</p>
-              <h4 className="text-3xl font-black">{member.name}</h4>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Recruitment CTA */}
-      <section className="bg-gradient-to-r from-primary via-secondary to-accent rounded-[3rem] p-12 md:p-24 text-center text-white shadow-bouncy relative overflow-hidden">
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"
-        />
-        <div className="relative z-10">
-          <h2 className="text-5xl md:text-7xl font-black mb-6">Join the Revolution</h2>
-          <p className="text-xl font-medium mb-12 max-w-2xl mx-auto opacity-90">
-            We are always looking for students who prioritize craft and technical rigor. Recruitment cycles open every semester.
-          </p>
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-white text-text-dark px-10 py-4 rounded-full font-bold text-xl shadow-lg"
-          >
-            Apply for Core '25 🚀
-          </motion.button>
-        </div>
-      </section>
-
+      </div>
     </main>
   );
 }
