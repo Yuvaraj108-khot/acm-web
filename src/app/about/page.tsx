@@ -1,21 +1,32 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import styles from './page.module.css';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen pt-32 px-4 max-w-7xl mx-auto flex flex-col items-center">
-      <motion.h1 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-5xl font-bold mb-8 text-white"
-      >
-        About <span className="text-accent-primary">Us</span>
-      </motion.h1>
-      <p className="text-gray-400 max-w-2xl text-center text-lg">
-        The ACM NMAMIT chapter is dedicated to advancing computing as a science and profession.
-        More content coming soon!
-      </p>
+    <div className={styles.page}>
+      <div className="container">
+        <AnimatedSection className={styles.header}>
+          <p className="eyebrow">Who We Are</p>
+          <div className="divider" />
+          <h1 className="text-display">About Us</h1>
+          <p className="text-subheading text-secondary" style={{ maxWidth: '48ch', marginTop: '1rem' }}>
+            The ACM Student Chapter is dedicated to advancing computing as a science and a profession, fostering a community of passionate builders.
+          </p>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.2}>
+          <div className={styles.content}>
+            <p className={styles.paragraph}>
+              We are a vibrant community of programmers, designers, builders, and technology enthusiasts. Our mission is to bridge the gap between academic theory and industry practice through hands-on learning, collaborative projects, and mentorship.
+            </p>
+            <p className={styles.paragraph}>
+              Throughout the year, we organize workshops on modern web technologies, AI/ML hackathons, guest lectures, and coding contests. Whether you are just writing your first line of code or design complex systems, you'll find a place to learn, grow, and collaborate.
+            </p>
+          </div>
+        </AnimatedSection>
+      </div>
     </div>
   );
 }

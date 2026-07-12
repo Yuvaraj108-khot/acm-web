@@ -1,90 +1,129 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { motion, AnimatePresence } from 'framer-motion';
+import styles from './Navbar.module.css';
 
-const links = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Events", path: "/events" },
-  { name: "Projects", path: "/projects" },
-  { name: "Team", path: "/team" },
+const navLinks = [
+  { href: '/',              label: 'Home' },
+  { href: '/events',        label: 'Events' },
+  { href: '/projects',      label: 'Projects' },
+  { href: '/team',          label: 'Team' },
+  { href: '/resources',     label: 'Resources' },
+  { href: '/announcements', label: 'Announcements' },
+  { href: '/gallery',       label: 'Gallery' },
+  { href: '/contact',       label: 'Contact' },
 ];
 
-export default function Navbar() {
+export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    
-    // Add glass effect only after scrolling past hero slightly
-    if (latest > 50) {
-      setHasScrolled(true);
-    } else {
-      setHasScrolled(false);
-    }
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-    // Hide on scroll down, show on scroll up
-    if (latest > previous && latest > 150) {
-      setHidden(true);
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
     } else {
-      setHidden(false);
+      document.body.style.overflow = '';
     }
-  });
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
 
   return (
-    <motion.nav 
-      variants={{
-        visible: { y: 0 },
-        hidden: { y: "-150%" },
-      }}
-      animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-[1200px]"
-    >
-      <div className={`rounded-2xl px-6 h-16 flex items-center justify-between transition-all duration-300 ${hasScrolled ? 'glass-nav border border-white/10 shadow-2xl' : 'bg-transparent border border-transparent'}`}>
-        
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`} role="banner">
+      <div className={`container ${styles.inner}`}>
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-8 h-8 bg-primary-base rounded flex items-center justify-center shadow-glow-primary transition-transform group-hover:scale-105">
-            <span className="text-white font-mono text-[12px] font-bold">A</span>
-          </div>
-          <span className="font-bold text-text-title text-sm tracking-widest uppercase hidden sm:block">
-            ACM NMAMIT
-          </span>
+        <Link href="/" className={styles.logo} aria-label="ACM Student Chapter — Home">
+          <span className={styles.logoMark}>ACM</span>
+          <span className={styles.logoDivider} aria-hidden="true" />
+          <span className={styles.logoName}>Student Chapter</span>
         </Link>
 
-        {/* Links */}
-        <div className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <Link 
-              key={link.path} 
-              href={link.path}
-              className={`text-sm font-medium transition-colors hover:text-text-title relative ${
-                pathname === link.path ? "text-text-title" : "text-text-muted"
-              }`}
+        {/* Desktop Nav */}
+        <nav className={styles.desktopNav} aria-label="Main navigation">
+          {navLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`${styles.navLink} ${pathname === href ? styles.active : ''}`}
+              aria-current={pathname === href ? 'page' : undefined}
             >
-              {link.name}
+              {label}
+              <span className={styles.underline} aria-hidden="true" />
             </Link>
           ))}
-        </div>
+        </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-6">
-          <Link href="/login" className="text-sm font-medium text-text-muted hover:text-text-title transition-colors hidden sm:block">
-            Sign In
+        <div className={styles.actions}>
+          <ThemeToggle />
+          <Link href="/contact#join" className="btn btn-primary btn-sm" aria-label="Join ACM Student Chapter">
+            Join Us
           </Link>
-          <button className="bg-white text-bg-base px-5 py-2 rounded-lg text-sm font-bold hover:bg-white/90 transition-colors">
-            Join ACM
+          <button
+            className={styles.menuBtn}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
-
       </div>
-    </motion.nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav
+            id="mobile-nav"
+            className={styles.mobileNav}
+            aria-label="Mobile navigation"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className={styles.mobileLinks}>
+              {navLinks.map(({ href, label }, i) => (
+                <motion.div
+                  key={href}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                >
+                  <Link
+                    href={href}
+                    className={`${styles.mobileLink} ${pathname === href ? styles.mobileActive : ''}`}
+                    aria-current={pathname === href ? 'page' : undefined}
+                  >
+                    {label}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
+                <Link href="/contact#join" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                  Join Us
+                </Link>
+              </motion.div>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }

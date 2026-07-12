@@ -1,36 +1,42 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-});
+import type { Metadata } from 'next';
+import './globals.css';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: "ACM NMAMIT | Premium Developer Platform",
-  description: "The definitive platform for the ACM NMAMIT student chapter.",
+  title: {
+    template: '%s | ACM Student Chapter',
+    default: 'ACM Student Chapter — Technology. Community. Impact.',
+  },
+  description:
+    'The ACM Student Chapter is a vibrant community of passionate technologists, builders, and innovators. Join us for workshops, hackathons, projects, and more.',
+  keywords: ['ACM', 'student chapter', 'technology', 'programming', 'computer science', 'community'],
+  openGraph: {
+    type: 'website',
+    siteName: 'ACM Student Chapter',
+    title: 'ACM Student Chapter — Technology. Community. Impact.',
+    description:
+      'A vibrant community of passionate technologists, builders, and innovators.',
+  },
 };
-
-import Navbar from "@/components/layout/Navbar";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-bg-base text-text-body antialiased`}
-      >
-        <Navbar />
-        {children}
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
+          <Navbar />
+          <main id="main-content">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
