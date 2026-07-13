@@ -17,6 +17,52 @@ const QUOTES = [
   '"Simplicity is the soul of efficiency." — Austin Freeman',
 ];
 
+interface QuizQuestion {
+  question: string;
+  options: string;
+  answer: 'a' | 'b' | 'c';
+  explanation: string;
+}
+
+const QUIZ_QUESTIONS: QuizQuestion[] = [
+  {
+    question: 'Question 1: In what year was ACM (Association for Computing Machinery) founded?',
+    options: '  [A] 1953  [B] 1947  [C] 1961',
+    answer: 'b',
+    explanation: 'ACM was founded in 1947, shortly after the ENIAC computer was completed.',
+  },
+  {
+    question: 'Question 2: Which language is known as the mother of modern high-level programming languages?',
+    options: '  [A] Assembly  [B] C  [C] Fortran',
+    answer: 'b',
+    explanation: 'C is widely considered the mother of modern high-level languages, influencing C++, Java, JS, and C#.',
+  },
+  {
+    question: 'Question 3: What does the acronym HTTP stand for?',
+    options: '  [A] Hypertext Transfer Protocol  [B] High Transfer Text Process  [C] Hyperlink Transmission Tech',
+    answer: 'a',
+    explanation: 'HTTP stands for Hypertext Transfer Protocol, the protocol used to exchange data on the World Wide Web.',
+  },
+  {
+    question: 'Question 4: Who is widely considered the father of modern computer science?',
+    options: '  [A] Bill Gates  [B] Alan Turing  [C] Ada Lovelace',
+    answer: 'b',
+    explanation: 'Alan Turing formalized the concepts of algorithm and computation with the Turing machine.',
+  },
+  {
+    question: 'Question 5: What was the first commercially successful high-level programming language?',
+    options: '  [A] Fortran  [B] COBOL  [C] Lisp',
+    answer: 'a',
+    explanation: 'Fortran (Formula Translation) was developed by John Backus at IBM in 1957.',
+  },
+  {
+    question: 'Question 6: Which data structure operates on a Last-In, First-Out (LIFO) basis?',
+    options: '  [A] Queue  [B] Array  [C] Stack',
+    answer: 'c',
+    explanation: 'A Stack operates on a LIFO basis, whereas a Queue operates on FIFO (First-In, First-Out).',
+  }
+];
+
 export function InteractiveTerminal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -46,6 +92,32 @@ export function InteractiveTerminal() {
   const outputEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Sync theme changes to CSS custom properties
+  useEffect(() => {
+    const root = document.documentElement;
+    if (themeMode === 'copper') {
+      root.style.setProperty('--accent', '#c58c3f');
+      root.style.setProperty('--accent-hover', '#d69c4f');
+      root.style.setProperty('--accent-muted', 'rgba(197, 140, 63, 0.08)');
+      root.style.setProperty('--accent-secondary', '#8cb0c5');
+    } else if (themeMode === 'green') {
+      root.style.setProperty('--accent', '#00ff66');
+      root.style.setProperty('--accent-hover', '#33ff85');
+      root.style.setProperty('--accent-muted', 'rgba(0, 255, 102, 0.08)');
+      root.style.setProperty('--accent-secondary', '#00e599');
+    } else if (themeMode === 'blue') {
+      root.style.setProperty('--accent', '#00a2ff');
+      root.style.setProperty('--accent-hover', '#33b5ff');
+      root.style.setProperty('--accent-muted', 'rgba(0, 162, 255, 0.08)');
+      root.style.setProperty('--accent-secondary', '#ff00a0');
+    } else if (themeMode === 'red') {
+      root.style.setProperty('--accent', '#ff3b3b');
+      root.style.setProperty('--accent-hover', '#ff6666');
+      root.style.setProperty('--accent-muted', 'rgba(255, 59, 59, 0.08)');
+      root.style.setProperty('--accent-secondary', '#ffb000');
+    }
+  }, [themeMode]);
+
   useEffect(() => {
     if (outputEndRef.current) {
       outputEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -65,35 +137,22 @@ export function InteractiveTerminal() {
     // Handle Active Quiz Game
     if (quizState?.active) {
       if (cleanCmd === 'a' || cleanCmd === 'b' || cleanCmd === 'c') {
-        if (quizState.step === 1) {
-          if (cleanCmd === 'b') {
-            newHistory.push(
-              { text: '✓ CORRECT! ACM was founded in 1947.', type: 'success' },
-              { text: 'Question 2: Which language is known as the mother of all languages?', type: 'system' },
-              { text: '  [A] Assembly  [B] C  [C] Fortran', type: 'system' }
-            );
-            setQuizState({ active: true, step: 2 });
-          } else {
-            newHistory.push(
-              { text: '✗ INCORRECT! The correct answer was [B] 1947.', type: 'error' },
-              { text: 'Quiz terminated.', type: 'system' }
-            );
-            setQuizState(null);
-          }
-        } else if (quizState.step === 2) {
-          if (cleanCmd === 'b') {
-            newHistory.push(
-              { text: '✓ CORRECT! C is widely considered the mother of modern high-level languages.', type: 'success' },
-              { text: '★ You won the trivia quiz! Hack the planet!', type: 'success' }
-            );
-          } else {
-            newHistory.push(
-              { text: '✗ INCORRECT! The correct answer was [B] C.', type: 'error' },
-              { text: 'Quiz terminated.', type: 'system' }
-            );
-          }
-          setQuizState(null);
+        const currentQuestionIndex = quizState.step;
+        const currentQuestion = QUIZ_QUESTIONS[currentQuestionIndex];
+
+        if (cleanCmd === currentQuestion.answer) {
+          newHistory.push(
+            { text: `✓ CORRECT! ${currentQuestion.explanation}`, type: 'success' },
+            { text: 'Quiz completed. Try again by typing "quiz".', type: 'system' }
+          );
+        } else {
+          newHistory.push(
+            { text: `✗ INCORRECT! The correct answer was [${currentQuestion.answer.toUpperCase()}].`, type: 'error' },
+            { text: `Explanation: ${currentQuestion.explanation}`, type: 'system' },
+            { text: 'Quiz completed. Try again by typing "quiz".', type: 'system' }
+          );
         }
+        setQuizState(null);
       } else if (cleanCmd === 'exit' || cleanCmd === 'quit') {
         newHistory.push({ text: 'Quiz exited.', type: 'system' });
         setQuizState(null);
@@ -105,7 +164,11 @@ export function InteractiveTerminal() {
       return;
     }
 
-    switch (cleanCmd) {
+    const commandParts = cleanCmd.split(' ');
+    const baseCmd = commandParts[0];
+    const arg = commandParts[1];
+
+    switch (baseCmd) {
       case 'help':
         newHistory.push(
           { text: 'Available commands:', type: 'system' },
@@ -116,7 +179,7 @@ export function InteractiveTerminal() {
           { text: '  neofetch   - Display ACM system configuration profile', type: 'system' },
           { text: '  quote      - Generate a random programmer wisdom quote', type: 'system' },
           { text: '  quiz       - Start the interactive Tech Trivia mini-game', type: 'system' },
-          { text: '  theme      - Cycle terminal color matrix (Copper/Green/Blue/Red)', type: 'system' },
+          { text: '  theme      - Change global UI colors (e.g. theme green, theme blue, theme red, theme copper)', type: 'system' },
           { text: '  sudo       - Attempt superuser system command overrides', type: 'system' },
           { text: '  clear      - Clear the console window', type: 'system' },
           { text: '  exit       - Close the interactive terminal', type: 'system' }
@@ -139,12 +202,17 @@ export function InteractiveTerminal() {
         break;
       case 'team':
         newHistory.push(
-          { text: 'ACM Leadership Core:', type: 'system' },
+          { text: 'ACM Core Leadership & Team Heads:', type: 'system' },
           { text: '  • Prakyath Yadav Suvarna - Vice President', type: 'success' },
           { text: '  • Hasnain Khan           - Secretary', type: 'success' },
-          { text: '  • Sujanraj N             - Joint Secretary', type: 'success' },
           { text: '  • Pranjal Shetty         - Treasurer', type: 'success' },
-          { text: '  • Aryan Verma            - Treasurer', type: 'success' }
+          { text: '  • Aryan Verma            - Treasurer', type: 'success' },
+          { text: '  • Yuvaraj Khot           - Tech Team Head', type: 'success' },
+          { text: '  • Swasthik M Prabhu      - Documentation Head', type: 'success' },
+          { text: '  • Trishal Hegde          - Event Team Head', type: 'success' },
+          { text: '  • Akshay S Mayya         - Graphics Team Head', type: 'success' },
+          { text: '  • Udhbhav S Nayak        - Media Team Head', type: 'success' },
+          { text: '  • K Divya Kamath         - Social Media Team Head', type: 'success' }
         );
         break;
       case 'neofetch':
@@ -168,20 +236,29 @@ export function InteractiveTerminal() {
         newHistory.push({ text: randomQuote, type: 'success' });
         break;
       case 'quiz':
+        const quizIndex = Math.floor(Math.random() * QUIZ_QUESTIONS.length);
         newHistory.push(
           { text: '★ Starting ACM Tech Trivia Mini-Game ★', type: 'success' },
-          { text: 'Question 1: In what year was ACM (Association for Computing Machinery) founded?', type: 'system' },
-          { text: '  [A] 1953  [B] 1947  [C] 1961', type: 'system' }
+          { text: QUIZ_QUESTIONS[quizIndex].question, type: 'system' },
+          { text: QUIZ_QUESTIONS[quizIndex].options, type: 'system' }
         );
-        setQuizState({ active: true, step: 1 });
+        setQuizState({ active: true, step: quizIndex });
         break;
       case 'theme':
-        let nextTheme: 'copper' | 'green' | 'blue' | 'red' = 'copper';
-        if (themeMode === 'copper') nextTheme = 'green';
-        else if (themeMode === 'green') nextTheme = 'blue';
-        else if (themeMode === 'blue') nextTheme = 'red';
-        setThemeMode(nextTheme);
-        newHistory.push({ text: `Terminal theme successfully set to ${nextTheme.toUpperCase()}`, type: 'success' });
+        if (arg === 'green' || arg === 'blue' || arg === 'red' || arg === 'copper') {
+          setThemeMode(arg);
+          newHistory.push({ text: `Global UI color theme changed to ${arg.toUpperCase()}`, type: 'success' });
+        } else if (!arg) {
+          // Cycle themes if no argument is specified
+          let nextTheme: 'copper' | 'green' | 'blue' | 'red' = 'copper';
+          if (themeMode === 'copper') nextTheme = 'green';
+          else if (themeMode === 'green') nextTheme = 'blue';
+          else if (themeMode === 'blue') nextTheme = 'red';
+          setThemeMode(nextTheme);
+          newHistory.push({ text: `Global UI color theme cycled to ${nextTheme.toUpperCase()}`, type: 'success' });
+        } else {
+          newHistory.push({ text: `Unknown theme: "${arg}". Use: theme copper | green | blue | red`, type: 'error' });
+        }
         break;
       case 'sudo':
         newHistory.push({
