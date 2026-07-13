@@ -27,7 +27,7 @@ export function EventsPreview() {
 
         <StaggerContainer className={styles.grid} staggerChildren={0.12}>
           {upcoming.map((event, i) => (
-            <StaggerItem key={event.id}>
+            <StaggerItem key={event.id} className={styles.gridItem}>
               <article className={`card ${styles.eventCard} ${i === 0 ? styles.featured : ''}`}>
                 <div className={styles.imgWrap}>
                   <img

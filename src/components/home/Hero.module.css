@@ -50,8 +50,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(196, 127, 44, 0.4); }
-  50%       { box-shadow: 0 0 0 8px rgba(196, 127, 44, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 229, 153, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(0, 229, 153, 0); }
 }
 
 .headline {
@@ -137,7 +137,7 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(196, 127, 44, 0.08) 0%,
+    rgba(0, 229, 153, 0.08) 0%,
     transparent 50%,
     rgba(0,0,0,0.2) 100%
   );
@@ -147,7 +147,7 @@
   position: absolute;
   inset: 0;
   border-radius: var(--radius-xl);
-  border: 1px solid rgba(196, 127, 44, 0.15);
+  border: 1px solid rgba(0, 229, 153, 0.15);
   pointer-events: none;
 }
 

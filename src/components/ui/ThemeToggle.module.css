@@ -22,6 +22,12 @@
   background: var(--accent-muted);
 }
 
+[data-theme="light"] .toggle {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
 .icon {
   display: flex;
   align-items: center;

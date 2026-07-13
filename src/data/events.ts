@@ -3,9 +3,10 @@ export interface Event {
   title: string;
   description: string;
   date: string;
+  dateText?: string;
   time: string;
   location: string;
-  category: 'Workshop' | 'Hackathon' | 'Talk' | 'Social' | 'Competition';
+  category: string;
   image: string;
   registrationUrl?: string;
   isPast: boolean;
@@ -123,5 +124,70 @@ export const events: Event[] = [
     image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80',
     isPast: true,
     attendees: 150,
+  },
+  {
+    id: 'e9',
+    title: 'Career Connect – The Thursday Chronicles',
+    description:
+      'An online career guidance series designed to help students prepare for placements through expert sessions and career-focused discussions.',
+    date: '2024-10-16',
+    dateText: 'Thursday, 16th, 23rd & 30th October 2024',
+    time: '5:30 PM – 7:00 PM',
+    location: 'Online (Teams)',
+    category: 'Career Development',
+    image: '/events/career-connect.jpg',
+    isPast: true,
+  },
+  {
+    id: 'e10',
+    title: 'The Interview Room',
+    description:
+      'A 1-on-1 mock interview and resume review event with industry experts conducted online.',
+    date: '2024-01-10',
+    dateText: '10th & 11th January 2024',
+    time: '9:00 AM – 6:00 PM',
+    location: 'Online',
+    category: 'Workshop',
+    image: '/events/interview-room.jpg',
+    isPast: true,
+  },
+  {
+    id: 'e11',
+    title: 'The Great Code Auction 2',
+    description:
+      'A strategic coding competition where teams bid on programming challenges and compete to solve them.',
+    date: '2024-01-24',
+    dateText: 'Saturday, 24th January 2024',
+    time: '9:00 AM',
+    location: 'ISL 02 / ISL 03',
+    category: 'Coding Contest',
+    image: '/events/great-code-auction-2.jpg',
+    isPast: true,
+  },
+  {
+    id: 'e12',
+    title: 'The Great Code Auction',
+    description:
+      'A strategic coding competition where teams bid on programming challenges and compete to solve them.',
+    date: '2024-01-18',
+    dateText: 'Saturday, 18th January 2024',
+    time: '9:00 AM',
+    location: 'ISL 01 & ISL 02',
+    category: 'Coding Contest',
+    image: '/events/great-code-auction.jpg',
+    isPast: true,
+  },
+  {
+    id: 'e13',
+    title: 'OpenSource Lab',
+    description:
+      'A hands-on workshop introducing students to the fundamentals of open source contributions.',
+    date: '2024-02-09',
+    dateText: 'Sunday, 9th February 2024',
+    time: '9:00 AM',
+    location: 'ISL 02 & ISL 03',
+    category: 'Workshop',
+    image: 'https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&q=80',
+    isPast: true,
   },
 ];
