@@ -6,7 +6,7 @@ import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/ui/
 import { team } from '@/data/team';
 import styles from './TeamPreview.module.css';
 
-const leaders = team.filter(m => m.tier === 'leadership').slice(0, 4);
+const leaders = team.filter(m => m.group === 'Leadership').slice(0, 4);
 
 export function TeamPreview() {
   return (
@@ -29,7 +29,7 @@ export function TeamPreview() {
               <article className={`card ${styles.card}`}>
                 <div className={styles.imgWrap}>
                   <img
-                    src={member.image}
+                    src={member.image || `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${member.id}`}
                     alt={`Portrait of ${member.name}, ${member.role}`}
                     className={styles.img}
                     loading="lazy"
@@ -38,7 +38,7 @@ export function TeamPreview() {
                 <div className={styles.body}>
                   <h3 className={styles.name}>{member.name}</h3>
                   <p className={styles.role}>{member.role}</p>
-                  <p className="text-xs text-muted">{member.department} · {member.year}</p>
+                  <p className="text-xs text-muted">{member.code}</p>
                   <div className={styles.socials}>
                     {member.linkedin && (
                       <a href={member.linkedin} className={styles.socialBtn} aria-label={`${member.name} on LinkedIn`} target="_blank" rel="noopener noreferrer">

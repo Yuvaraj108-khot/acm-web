@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowRight, CalendarDays, Users, Trophy, Code2 } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { AmbientBackground } from '@/components/ui/AmbientBackground';
+import { InteractiveTerminal } from '@/components/ui/InteractiveTerminal';
 import styles from './Hero.module.css';
 
 const stats = [
@@ -122,6 +123,8 @@ export function Hero() {
         <span className={styles.scrollLine} />
         <span className={styles.scrollText}>Scroll</span>
       </div>
+
+      <InteractiveTerminal />
     </section>
   );
 }
