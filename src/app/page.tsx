@@ -5,7 +5,6 @@ import { EventsPreview } from '@/components/home/EventsPreview';
 import { ProjectsPreview } from '@/components/home/ProjectsPreview';
 import { TeamPreview } from '@/components/home/TeamPreview';
 import { Testimonials } from '@/components/home/Testimonials';
-import { GalleryPreview } from '@/components/home/GalleryPreview';
 import { JoinCTA } from '@/components/home/JoinCTA';
 
 export const metadata: Metadata = {
@@ -23,7 +22,6 @@ export default function HomePage() {
       <ProjectsPreview />
       <TeamPreview />
       <Testimonials />
-      <GalleryPreview />
       <JoinCTA />
     </>
   );

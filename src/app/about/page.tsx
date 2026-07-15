@@ -22,7 +22,7 @@ export default function AboutPage() {
               We are a vibrant community of programmers, designers, builders, and technology enthusiasts. Our mission is to bridge the gap between academic theory and industry practice through hands-on learning, collaborative projects, and mentorship.
             </p>
             <p className={styles.paragraph}>
-              Throughout the year, we organize workshops on modern web technologies, AI/ML hackathons, guest lectures, and coding contests. Whether you are just writing your first line of code or design complex systems, you'll find a place to learn, grow, and collaborate.
+              Throughout the year, we organize workshops on modern web technologies, AI/ML hackathons, guest lectures, and coding contests. Whether you are just writing your first line of code or design complex systems, you&apos;ll find a place to learn, grow, and collaborate.
             </p>
           </div>
         </AnimatedSection>

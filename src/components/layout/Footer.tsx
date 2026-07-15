@@ -7,12 +7,9 @@ const footerLinks = {
     { href: '/about',    label: 'About Us' },
     { href: '/team',     label: 'Team' },
     { href: '/projects', label: 'Projects' },
-    { href: '/gallery',  label: 'Gallery' },
   ],
   Community: [
     { href: '/events',        label: 'Events' },
-    { href: '/announcements', label: 'Announcements' },
-    { href: '/resources',     label: 'Resources' },
     { href: '/contact#join',  label: 'Join Us' },
   ],
   Connect: [

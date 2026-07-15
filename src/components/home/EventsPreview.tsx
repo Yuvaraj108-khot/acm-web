@@ -17,7 +17,7 @@ export function EventsPreview() {
             <p className="eyebrow">Upcoming</p>
             <div className="divider" />
             <div className={styles.headerRow}>
-              <h2 className="text-display" id="events-heading">What's on.</h2>
+              <h2 className="text-display" id="events-heading">What&apos;s on.</h2>
               <Link href="/events" className="btn btn-outline btn-sm" aria-label="View all events">
                 All Events <ArrowRight size={14} aria-hidden="true" />
               </Link>

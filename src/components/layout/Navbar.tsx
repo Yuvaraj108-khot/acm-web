@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -9,14 +10,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Navbar.module.css';
 
 const navLinks = [
-  { href: '/',              label: 'Home' },
-  { href: '/events',        label: 'Events' },
-  { href: '/projects',      label: 'Projects' },
-  { href: '/team',          label: 'Team' },
-  { href: '/resources',     label: 'Resources' },
-  { href: '/announcements', label: 'Announcements' },
-  { href: '/gallery',       label: 'Gallery' },
-  { href: '/contact',       label: 'Contact' },
+  { href: '/',         label: 'Home' },
+  { href: '/events',   label: 'Events' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/team',     label: 'Team' },
+  { href: '/contact',  label: 'Contact' },
 ];
 
 export function Navbar() {
