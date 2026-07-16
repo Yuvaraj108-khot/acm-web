@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, MapPin, Globe, Share2, X, Send, CheckCircle } from 'lucide-react';
-import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { Mail, MapPin, Globe, Share2, X, Check } from 'lucide-react';
 import styles from './page.module.css';
 
 const socials = [
@@ -17,50 +16,53 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder: would send to API
     setSubmitted(true);
   };
 
   return (
     <div className={styles.page}>
       <div className="container">
-        <AnimatedSection className={styles.header}>
-          <p className="eyebrow">Get in Touch</p>
-          <div className="divider" />
-          <h1 className="text-display">Contact Us</h1>
-          <p className="text-subheading text-secondary" style={{ maxWidth: '46ch', marginTop: '1rem' }}>
-            Questions, partnership ideas, or just want to join? We would love to hear from you.
-          </p>
-        </AnimatedSection>
+        {/* Page Hero */}
+        <header className={styles.hero}>
+          <span className="badge-label">Contact</span>
+          <h1 className="text-hero" style={{ marginTop: '16px', marginBottom: '24px' }}>
+            Let&apos;s Connect
+          </h1>
+        </header>
 
         <div className={styles.grid}>
-          {/* Info panel */}
-          <div className={styles.infoPanel}>
-            <div className={styles.infoCard} id="join">
-              <h2 className={styles.infoTitle}>Join ACM</h2>
-              <p className="text-sm text-secondary" style={{ lineHeight: 1.7 }}>
-                Membership is open to all students — no prior experience required. Fill out the form and we will reach out with next steps.
-              </p>
-              <ul className={styles.benefits} aria-label="Membership benefits">
-                {['Access to all workshops & events', 'Project team participation', 'Mentorship & networking', 'ACM digital library access', 'Certificate of membership'].map(b => (
-                  <li key={b} className={styles.benefit}>
-                    <CheckCircle size={14} className={styles.checkIcon} aria-hidden="true" />
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Left Panel - Dark Card */}
+          <div className={`${styles.card} ${styles.cardDark}`} id="join">
+            <h2 className={styles.infoTitle}>Join ACM</h2>
+            <p className={styles.infoSub}>
+              Membership is open to all students — no prior experience required. Fill out the form and we will reach out with next steps.
+            </p>
+            
+            <ul className={styles.benefits} aria-label="Membership benefits">
+              {[
+                'Access to all workshops & events',
+                'Project team participation',
+                'Mentorship & networking',
+                'ACM digital library access',
+                'Certificate of membership'
+              ].map(b => (
+                <li key={b} className={styles.benefit}>
+                  <Check size={16} className={styles.checkIcon} aria-hidden="true" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
 
             <div className={styles.contactDetails}>
               <div className={styles.contactItem}>
-                <Mail size={16} aria-hidden="true" />
+                <Mail size={16} className={styles.contactIcon} aria-hidden="true" />
                 <div>
                   <p className={styles.contactLabel}>Email</p>
                   <a href="mailto:acm@university.edu" className={styles.contactValue}>acm@university.edu</a>
                 </div>
               </div>
               <div className={styles.contactItem}>
-                <MapPin size={16} aria-hidden="true" />
+                <MapPin size={16} className={styles.contactIcon} aria-hidden="true" />
                 <div>
                   <p className={styles.contactLabel}>Location</p>
                   <p className={styles.contactValue}>Engineering Block, Room 301<br />University Campus</p>
@@ -73,26 +75,30 @@ export default function ContactPage() {
               <div className={styles.socialLinks}>
                 {socials.map(({ icon: Icon, href, label }) => (
                   <a key={label} href={href} className={styles.socialBtn} aria-label={label} target="_blank" rel="noopener noreferrer">
-                    <Icon size={18} aria-hidden="true" />
+                    <Icon size={20} aria-hidden="true" />
                   </a>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Form */}
-          <div className={styles.formWrap}>
+          {/* Right Panel - Form (White Card) */}
+          <div className={`${styles.card} ${styles.cardLight}`}>
             {submitted ? (
               <div className={styles.success} role="alert">
-                <CheckCircle size={40} className={styles.successIcon} aria-hidden="true" />
-                <h2>Message Sent!</h2>
-                <p className="text-secondary">Thanks for reaching out. We will get back to you within 48 hours.</p>
+                <div className={styles.successIconWrapper}>
+                  <Check size={32} className={styles.successIcon} />
+                </div>
+                <h2>Message sent!</h2>
+                <p className="text-secondary" style={{ marginTop: '12px' }}>
+                  Thanks for reaching out. We will get back to you within 48 hours.
+                </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className={styles.form} noValidate aria-label="Contact form">
                 <div className={styles.formRow}>
                   <div className={styles.field}>
-                    <label className="label" htmlFor="name">Full Name <span aria-hidden="true">*</span></label>
+                    <label className="label" htmlFor="name">Full Name *</label>
                     <input
                       id="name"
                       className="input"
@@ -105,7 +111,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div className={styles.field}>
-                    <label className="label" htmlFor="email">Email Address <span aria-hidden="true">*</span></label>
+                    <label className="label" htmlFor="email">Email Address *</label>
                     <input
                       id="email"
                       className="input"
@@ -126,6 +132,7 @@ export default function ContactPage() {
                     className="input"
                     value={form.interest}
                     onChange={e => setForm(f => ({ ...f, interest: e.target.value }))}
+                    style={{ appearance: 'none', backgroundImage: 'url("data:image/svg+xml;utf8,<svg fill=\'black\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/><path d=\'M0 0h24v24H0z\' fill=\'none\'/></svg>")', backgroundPosition: 'right 12px center', backgroundRepeat: 'no-repeat' }}
                   >
                     <option value="general">General Inquiry</option>
                     <option value="membership">Joining as a Member</option>
@@ -136,7 +143,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className={styles.field}>
-                  <label className="label" htmlFor="subject">Subject <span aria-hidden="true">*</span></label>
+                  <label className="label" htmlFor="subject">Subject *</label>
                   <input
                     id="subject"
                     className="input"
@@ -150,11 +157,11 @@ export default function ContactPage() {
                 </div>
 
                 <div className={styles.field}>
-                  <label className="label" htmlFor="message">Message <span aria-hidden="true">*</span></label>
+                  <label className="label" htmlFor="message">Message *</label>
                   <textarea
                     id="message"
                     className="input"
-                    rows={6}
+                    rows={5}
                     placeholder="Tell us more..."
                     value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
@@ -164,8 +171,8 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <button type="submit" className="btn btn-primary">
-                  Send Message <Send size={15} aria-hidden="true" />
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                  Send Message
                 </button>
               </form>
             )}

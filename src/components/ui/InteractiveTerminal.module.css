@@ -6,25 +6,25 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  background: var(--bg-card);
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  background-color: var(--color-surface-dark);
+  border: 2px solid var(--term-accent, var(--color-accent));
+  color: var(--term-accent, var(--color-accent));
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-full);
-  box-shadow: 0 0 15px rgba(197, 140, 63, 0.15), var(--shadow-md);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   font-family: monospace;
   font-size: 0.85rem;
   font-weight: 700;
-  transition: all var(--transition-base);
+  transition: all var(--transition-fast);
   cursor: pointer;
 }
 
 .launcher:hover {
-  transform: translateY(-3px);
-  background: var(--accent-muted);
-  box-shadow: 0 0 25px rgba(197, 140, 63, 0.3), var(--shadow-lg);
-  color: var(--accent-hover);
-  border-color: var(--accent-hover);
+  transform: translateY(-3px) scale(1.05);
+  background-color: #222222;
+  box-shadow: 0 8px 32px var(--term-accent-glow, rgba(190, 250, 55, 0.2));
+  color: var(--term-accent, var(--color-accent));
+  border-color: var(--term-accent, var(--color-accent));
 }
 
 .pulseIcon {
@@ -63,32 +63,32 @@
 }
 
 /* Theme Color Defs */
-.copper {
-  border: 1px solid rgba(197, 140, 63, 0.4);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(197, 140, 63, 0.15);
-  --term-accent: #c58c3f;
-  --term-accent-glow: rgba(197, 140, 63, 0.3);
-}
-
 .green {
-  border: 1px solid rgba(0, 255, 102, 0.4);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(0, 255, 102, 0.15);
-  --term-accent: #00ff66;
-  --term-accent-glow: rgba(0, 255, 102, 0.3);
+  border: 1px solid rgba(190, 250, 55, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(190, 250, 55, 0.15);
+  --term-accent: #BEFA37;
+  --term-accent-glow: rgba(190, 250, 55, 0.3);
 }
 
-.blue {
-  border: 1px solid rgba(0, 162, 255, 0.4);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(0, 162, 255, 0.15);
-  --term-accent: #00a2ff;
-  --term-accent-glow: rgba(0, 162, 255, 0.3);
+.purple {
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(168, 85, 247, 0.15);
+  --term-accent: #A855F7;
+  --term-accent-glow: rgba(168, 85, 247, 0.3);
 }
 
-.red {
-  border: 1px solid rgba(255, 59, 59, 0.4);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(255, 59, 59, 0.15);
-  --term-accent: #ff3b3b;
-  --term-accent-glow: rgba(255, 59, 59, 0.3);
+.orange {
+  border: 1px solid rgba(255, 107, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(255, 107, 0, 0.15);
+  --term-accent: #FF6B00;
+  --term-accent-glow: rgba(255, 107, 0, 0.3);
+}
+
+.cyan {
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+  --term-accent: #00E5FF;
+  --term-accent-glow: rgba(0, 229, 255, 0.3);
 }
 
 @keyframes slideIn {

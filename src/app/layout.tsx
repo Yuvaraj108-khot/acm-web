@@ -3,7 +3,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { BackgroundEffects } from '@/components/ui/BackgroundEffects';
+import { InteractiveTerminal } from '@/components/ui/InteractiveTerminal';
 
 export const metadata: Metadata = {
   title: {
@@ -31,13 +31,15 @@ export default function RootLayout({
     <html lang="en" data-theme="dark" suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <BackgroundEffects />
-          <a href="#main-content" className="skip-link">
-            Skip to main content
-          </a>
-          <Navbar />
-          <main id="main-content">{children}</main>
-          <Footer />
+          <div className="root-layout-card">
+            <a href="#main-content" className="skip-link">
+              Skip to main content
+            </a>
+            <Navbar />
+            <main id="main-content">{children}</main>
+            <Footer />
+            <InteractiveTerminal />
+          </div>
         </ThemeProvider>
       </body>
     </html>

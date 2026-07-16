@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { CalendarDays, MapPin, Clock, Users, ArrowRight } from 'lucide-react';
-import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/ui/AnimatedSection';
+import { CalendarDays, MapPin, Clock } from 'lucide-react';
 import { events } from '@/data/events';
 import type { Event } from '@/data/events';
+import { GeomPlaceholder } from '@/components/ui/GeomPlaceholder';
 import styles from './page.module.css';
 
 const categories = ['All', 'Workshop', 'Hackathon', 'Talk', 'Competition', 'Social', 'Career Development', 'Coding Contest'] as const;
@@ -16,22 +16,20 @@ export default function EventsPage() {
   const filtered = events
     .filter(e => (tab === 'upcoming' ? !e.isPast : e.isPast))
     .filter(e => category === 'All' || e.category === category)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // sort past events newer first (or custom order)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div className={styles.page}>
       <div className="container">
-        {/* Header */}
-        <AnimatedSection className={styles.header}>
-          <p className="eyebrow">Chapter Events</p>
-          <div className="divider" />
-          <h1 className="text-display">Events & Workshops</h1>
-          <p className="text-subheading text-secondary" style={{ maxWidth: '44ch', marginTop: '1rem' }}>
-            From hands-on workshops to competitive hackathons — there is always something happening at ACM.
-          </p>
-        </AnimatedSection>
+        {/* Page Hero */}
+        <header className={styles.hero}>
+          <span className="badge-label">Events</span>
+          <h1 className="text-hero" style={{ marginTop: '16px', marginBottom: '24px' }}>
+            Workshops, Hackathons &amp; More
+          </h1>
+        </header>
 
-        {/* Tab bar */}
+        {/* Filter Tabs */}
         <div className={styles.tabs} role="tablist" aria-label="Event filter by time">
           {(['upcoming', 'past'] as const).map(t => (
             <button
@@ -46,12 +44,12 @@ export default function EventsPage() {
           ))}
         </div>
 
-        {/* Category filter */}
+        {/* Category Filters */}
         <div className={styles.filters} role="group" aria-label="Filter events by category">
           {categories.map(cat => (
             <button
               key={cat}
-              className={`badge ${category === cat ? 'badge-accent' : 'badge-muted'} ${styles.filterBtn}`}
+              className={`${styles.filterBtn} ${category === cat ? styles.filterBtnActive : ''}`}
               onClick={() => setCategory(cat)}
               aria-pressed={category === cat}
             >
@@ -60,79 +58,95 @@ export default function EventsPage() {
           ))}
         </div>
 
-        {/* Events grid */}
+        {/* Events Grid (Alternating white or dark cards) */}
         {filtered.length === 0 ? (
-          <p className="text-secondary" style={{ textAlign: 'center', padding: '4rem 0' }}>
-            No events found for this filter.
-          </p>
+          <p className={styles.emptyState}>No events found matching your criteria.</p>
         ) : (
-          <StaggerContainer className={styles.grid}>
-            {filtered.map(event => (
-              <StaggerItem key={event.id} className={styles.gridItem}>
-                <EventCard event={event} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+          <div className={styles.grid}>
+            {filtered.map((event, index) => {
+              // Alternating card layout: white/dark
+              const isDark = index % 2 === 1;
+              return (
+                <EventCard key={event.id} event={event} isDark={isDark} />
+              );
+            })}
+          </div>
         )}
       </div>
     </div>
   );
 }
 
-function EventCard({ event }: { event: Event }) {
-  // Helper to resolve CSS classes for categories
-  const getCategoryClass = (cat: string) => {
-    switch (cat.toLowerCase()) {
-      case 'career development': return styles.careerDevelopment;
-      case 'workshop': return styles.workshop;
-      case 'coding contest': return styles.codingContest;
-      case 'hackathon': return styles.hackathon;
-      case 'talk': return styles.talk;
-      case 'competition': return styles.competition;
-      case 'social': return styles.social;
-      default: return '';
-    }
-  };
-
+function EventCard({ event, isDark }: { event: Event; isDark: boolean }) {
   return (
-    <article className={`card ${styles.card}`}>
-      <div className={styles.imgWrap}>
-        <img src={event.image} alt={`${event.title}`} className={styles.img} loading="lazy" />
-        <span className={styles.statusBadge}>
-          <span className={`${styles.statusDot} ${event.isPast ? styles.completedDot : styles.upcomingDot}`} />
-          {event.isPast ? 'Completed' : 'Upcoming'}
-        </span>
+    <article className={`${styles.card} ${isDark ? styles.cardDark : styles.cardLight}`}>
+      {/* Event Image */}
+      <div className={styles.visualWrap}>
+        <img
+          src={event.image}
+          alt={event.title}
+          className={styles.img}
+          style={{ width: '100%', height: '100%', minHeight: '200px', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }}
+          loading="lazy"
+        />
       </div>
+
+      {/* Card Content */}
       <div className={styles.body}>
-        <div>
-          <span className={`badge ${styles.categoryTag} ${getCategoryClass(event.category)}`}>
-            {event.category}
+        <div className={styles.cardHeader}>
+          {/* Status Badge */}
+          <span className={`badge ${event.isPast ? 'badge-muted' : ''}`}>
+            {event.isPast ? 'Completed' : 'Upcoming'}
           </span>
+          <span className={styles.categoryLabel}>{event.category}</span>
         </div>
+
         <h2 className={styles.title}>{event.title}</h2>
+
+        {/* Meta Info */}
         <div className={styles.meta}>
-          <span className={styles.dateMeta}>
-            <CalendarDays size={13} aria-hidden="true" />
+          <span className={styles.metaItem}>
+            <CalendarDays size={14} style={{ marginRight: '6px' }} />
             {event.dateText || new Date(event.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </span>
-          {event.time && (
-            <span><Clock size={13} aria-hidden="true" />{event.time}</span>
-          )}
           {event.location && (
-            <span><MapPin size={13} aria-hidden="true" />{event.location}</span>
+            <span className={styles.metaItem}>
+              <MapPin size={14} style={{ marginRight: '6px' }} />
+              {event.location}
+            </span>
           )}
-          {event.attendees && (
-            <span><Users size={13} aria-hidden="true" />{event.attendees} attendees</span>
+          {event.time && (
+            <span className={styles.metaItem}>
+              <Clock size={14} style={{ marginRight: '6px' }} />
+              {event.time}
+            </span>
           )}
         </div>
-        <p className={`text-sm text-secondary ${styles.description}`}>{event.description}</p>
-        {event.speakers && (
-          <p className={`text-xs text-muted ${styles.speakers}`}>Speakers: {event.speakers.join(', ')}</p>
+
+        <p className={styles.description}>{event.description}</p>
+
+        {/* Speakers Section */}
+        {event.speakers && event.speakers.length > 0 && (
+          <div className={styles.speakers}>
+            <div className={styles.speakerAvatar}>
+              {event.speakers[0][0]}
+            </div>
+            <div>
+              <p className={styles.speakerLabel}>Guest Speaker</p>
+              <p className={styles.speakerName}>{event.speakers.join(', ')}</p>
+            </div>
+          </div>
         )}
-        {event.registrationUrl && !event.isPast && (
-          <a href={event.registrationUrl} className="btn btn-primary btn-sm" style={{ marginTop: 'auto' }}>
-            Register Now <ArrowRight size={13} aria-hidden="true" />
+
+        {/* Action Button */}
+        {!event.isPast && event.registrationUrl ? (
+          <a href={event.registrationUrl} className="btn btn-primary btn-sm" style={{ marginTop: 'auto', alignSelf: 'flex-start' }}>
+            Register Now
           </a>
+        ) : (
+          <span className="btn btn-outline btn-sm" style={{ marginTop: 'auto', alignSelf: 'flex-start', cursor: 'default', opacity: 0.5 }}>
+            Completed
+          </span>
         )}
       </div>
     </article>

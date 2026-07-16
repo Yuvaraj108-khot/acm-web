@@ -1,4 +1,3 @@
-import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/ui/AnimatedSection';
 import { team } from '@/data/team';
 import styles from './page.module.css';
 
@@ -25,14 +24,13 @@ export default function TeamPage() {
   return (
     <div className={styles.page}>
       <div className="container">
-        <AnimatedSection className={styles.header}>
-          <p className="eyebrow">Our People</p>
-          <div className="divider" />
-          <h1 className="text-display">The Team</h1>
-          <p className="text-subheading text-secondary" style={{ maxWidth: '48ch', marginTop: '1rem' }}>
-            Meet the members currently shaping the ACM chapter across leadership, administration, documentation, and events.
-          </p>
-        </AnimatedSection>
+        {/* Page Hero */}
+        <header className={styles.hero}>
+          <span className="badge-label">Team</span>
+          <h1 className="text-hero" style={{ marginTop: '16px', marginBottom: '24px' }}>
+            The People Behind ACM
+          </h1>
+        </header>
 
         {groups.map((group) => {
           const members = team.filter((member) => member.group === group);
@@ -40,31 +38,39 @@ export default function TeamPage() {
 
           return (
             <section key={group} className={styles.tierSection} aria-labelledby={`group-${group}`}>
-              <h2 className={styles.tierLabel} id={`group-${group}`}>{group}</h2>
-              <StaggerContainer className={styles.grid}>
-                {members.map((member) => (
-                  <StaggerItem key={member.id} className={styles.gridItem}>
-                    <article className={`card ${styles.card}`}>
-                      {member.image ? (
-                        <div className={styles.imgWrap}>
-                          <img
-                            src={member.image}
-                            alt={`Portrait of ${member.name ?? member.code}, ${member.role}`}
-                            className={styles.img}
-                            loading="lazy"
-                          />
-                        </div>
-                      ) : null}
+              <div className={styles.tierHeader}>
+                <span className="badge-label">{group}</span>
+              </div>
+
+              <div className={styles.grid}>
+                {members.map((member) => {
+                  const avatarUrl = member.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(member.name || member.id)}`;
+
+                  return (
+                    <article key={member.id} className={styles.card}>
+                      <div className={styles.avatar}>
+                        <img
+                          src={avatarUrl}
+                          alt={`Portrait of ${member.name ?? member.code}`}
+                          className={styles.img}
+                          loading="lazy"
+                        />
+                      </div>
+                      
                       <div className={styles.body}>
                         <h3 className={styles.name}>{member.name ?? member.code}</h3>
                         <p className={styles.role}>{member.role}</p>
-                        {member.name ? <p className="text-xs text-muted">{member.code}</p> : null}
-                        {member.bio ? <p className={`text-sm text-secondary ${styles.bio}`}>{member.bio}</p> : null}
+                        {member.name && <p className={styles.code}>{member.code}</p>}
+                        {member.bio && (
+                          <p className={styles.bio} title={member.bio}>
+                            {member.bio}
+                          </p>
+                        )}
                       </div>
                     </article>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
+                  );
+                })}
+              </div>
             </section>
           );
         })}

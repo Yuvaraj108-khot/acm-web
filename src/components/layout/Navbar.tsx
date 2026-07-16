@@ -5,12 +5,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Navbar.module.css';
 
 const navLinks = [
   { href: '/',         label: 'Home' },
+  { href: '/about',    label: 'About Us' },
   { href: '/events',   label: 'Events' },
   { href: '/projects', label: 'Projects' },
   { href: '/team',     label: 'Team' },
@@ -44,11 +44,8 @@ export function Navbar() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`} role="banner">
       <div className={`container ${styles.inner}`}>
-        {/* Logo */}
         <Link href="/" className={styles.logo} aria-label="ACM Student Chapter — Home">
-          <span className={styles.logoMark}>ACM</span>
-          <span className={styles.logoDivider} aria-hidden="true" />
-          <span className={styles.logoName}>Student Chapter</span>
+          <img src="/acm-logo.jpg" alt="ACM Logo" className={styles.logoImg} />
         </Link>
 
         {/* Desktop Nav */}
@@ -68,8 +65,7 @@ export function Navbar() {
 
         {/* Actions */}
         <div className={styles.actions}>
-          <ThemeToggle />
-          <Link href="/contact#join" className="btn btn-primary btn-sm" aria-label="Join ACM Student Chapter">
+          <Link href="/contact#join" className="btn btn-outline btn-sm" aria-label="Join ACM Student Chapter">
             Join Us
           </Link>
           <button

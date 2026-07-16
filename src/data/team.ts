@@ -85,6 +85,7 @@ export const team: TeamMember[] = [
     role: 'Head',
     code: 'NNM24IS269',
     group: 'Event Team',
+    image: 'https://api.dicebear.com/7.x/adventurer/svg?seed=TrishalHegde',
   },
   {
     id: 'event-2',

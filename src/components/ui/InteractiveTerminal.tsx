@@ -64,10 +64,10 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
 ];
 
 export function InteractiveTerminal() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
   const [input, setInput] = useState('');
-  const [themeMode, setThemeMode] = useState<'copper' | 'green' | 'blue' | 'red'>('copper');
+  const [themeMode, setThemeMode] = useState<'green' | 'purple' | 'orange' | 'cyan'>('green');
   
   // Game/Quiz state
   const [quizState, setQuizState] = useState<{ active: boolean; step: number } | null>(null);
@@ -92,29 +92,26 @@ export function InteractiveTerminal() {
   const outputEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Sync theme changes to CSS custom properties
+
+  // Sync theme changes to global website CSS variables
   useEffect(() => {
     const root = document.documentElement;
-    if (themeMode === 'copper') {
-      root.style.setProperty('--accent', '#c58c3f');
-      root.style.setProperty('--accent-hover', '#d69c4f');
-      root.style.setProperty('--accent-muted', 'rgba(197, 140, 63, 0.08)');
-      root.style.setProperty('--accent-secondary', '#8cb0c5');
-    } else if (themeMode === 'green') {
-      root.style.setProperty('--accent', '#00ff66');
-      root.style.setProperty('--accent-hover', '#33ff85');
-      root.style.setProperty('--accent-muted', 'rgba(0, 255, 102, 0.08)');
-      root.style.setProperty('--accent-secondary', '#00e599');
-    } else if (themeMode === 'blue') {
-      root.style.setProperty('--accent', '#00a2ff');
-      root.style.setProperty('--accent-hover', '#33b5ff');
-      root.style.setProperty('--accent-muted', 'rgba(0, 162, 255, 0.08)');
-      root.style.setProperty('--accent-secondary', '#ff00a0');
-    } else if (themeMode === 'red') {
-      root.style.setProperty('--accent', '#ff3b3b');
-      root.style.setProperty('--accent-hover', '#ff6666');
-      root.style.setProperty('--accent-muted', 'rgba(255, 59, 59, 0.08)');
-      root.style.setProperty('--accent-secondary', '#ffb000');
+    if (themeMode === 'green') {
+      root.style.setProperty('--color-accent', '#BEFA37');
+      root.style.setProperty('--accent', '#BEFA37');
+      root.style.setProperty('--accent-hover', '#aed930');
+    } else if (themeMode === 'purple') {
+      root.style.setProperty('--color-accent', '#A855F7');
+      root.style.setProperty('--accent', '#A855F7');
+      root.style.setProperty('--accent-hover', '#9333ea');
+    } else if (themeMode === 'orange') {
+      root.style.setProperty('--color-accent', '#FF6B00');
+      root.style.setProperty('--accent', '#FF6B00');
+      root.style.setProperty('--accent-hover', '#e05e00');
+    } else if (themeMode === 'cyan') {
+      root.style.setProperty('--color-accent', '#00E5FF');
+      root.style.setProperty('--accent', '#00E5FF');
+      root.style.setProperty('--accent-hover', '#00b8cc');
     }
   }, [themeMode]);
 
@@ -245,19 +242,19 @@ export function InteractiveTerminal() {
         setQuizState({ active: true, step: quizIndex });
         break;
       case 'theme':
-        if (arg === 'green' || arg === 'blue' || arg === 'red' || arg === 'copper') {
+        if (arg === 'green' || arg === 'purple' || arg === 'orange' || arg === 'cyan') {
           setThemeMode(arg);
           newHistory.push({ text: `Global UI color theme changed to ${arg.toUpperCase()}`, type: 'success' });
         } else if (!arg) {
           // Cycle themes if no argument is specified
-          let nextTheme: 'copper' | 'green' | 'blue' | 'red' = 'copper';
-          if (themeMode === 'copper') nextTheme = 'green';
-          else if (themeMode === 'green') nextTheme = 'blue';
-          else if (themeMode === 'blue') nextTheme = 'red';
+          let nextTheme: 'green' | 'purple' | 'orange' | 'cyan' = 'green';
+          if (themeMode === 'green') nextTheme = 'purple';
+          else if (themeMode === 'purple') nextTheme = 'orange';
+          else if (themeMode === 'orange') nextTheme = 'cyan';
           setThemeMode(nextTheme);
           newHistory.push({ text: `Global UI color theme cycled to ${nextTheme.toUpperCase()}`, type: 'success' });
         } else {
-          newHistory.push({ text: `Unknown theme: "${arg}". Use: theme copper | green | blue | red`, type: 'error' });
+          newHistory.push({ text: `Unknown theme: "${arg}". Use: theme green | purple | orange | cyan`, type: 'error' });
         }
         break;
       case 'sudo':
@@ -315,7 +312,7 @@ export function InteractiveTerminal() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className={styles.launcher}
+          className={`${styles.launcher} ${styles[themeMode]}`}
           aria-label="Open developer terminal"
           title="Open interactive terminal"
         >

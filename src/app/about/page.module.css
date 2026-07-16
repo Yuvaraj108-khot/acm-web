@@ -1,12 +1,95 @@
-.page { padding-top: var(--space-16); padding-bottom: var(--space-24); }
-.header { margin-bottom: var(--space-12); }
-.content {
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.7;
-  color: var(--text-secondary);
+.page {
+  background-color: var(--color-surface);
 }
-.paragraph {
-  margin-bottom: var(--space-6);
-  font-size: 1.125rem;
+
+.heroSection {
+  padding: var(--space-20) 0 var(--space-12);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gridSection {
+  background-color: #F5F5F5;
+  padding: var(--space-20) 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.card {
+  border-radius: var(--radius-lg);
+  padding: var(--space-12);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.cardLight {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.cardLight:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+.cardDark {
+  background-color: var(--color-surface-dark);
+  color: var(--color-text-inverse);
+  border: 1px solid var(--color-border-dark);
+}
+
+.cardDark:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+.cardLabel {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-4);
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: var(--space-4);
+}
+
+.cardLight .cardTitle {
+  color: var(--color-text-primary);
+}
+
+.cardDark .cardTitle {
+  color: var(--color-text-inverse);
+}
+
+.cardText {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.cardLight .cardText {
+  color: var(--color-text-secondary);
+}
+
+.cardDark .cardText {
+  color: #CCCCCC;
 }
